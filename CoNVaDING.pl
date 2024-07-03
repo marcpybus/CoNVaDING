@@ -95,10 +95,10 @@ if ($mode eq "StartWithBestScore"){
         $regionThreshold = 20;
     }
     if (not defined $ratioCutOffLow) {
-        $ratioCutOffLow = 0.65;
+        $ratioCutOffLow = 0.70;
     }
     if (not defined $ratioCutOffHigh) {
-        $ratioCutOffHigh = 1.4;
+        $ratioCutOffHigh = 1.3;
     }
     if (not defined $zScoreCutOffLow) {
         $zScoreCutOffLow = -3;
@@ -2104,7 +2104,7 @@ sub createNormalizedCoverageFiles {
                     my $normautoControl=$linesControl[$normAutoIdxControl];
                     my $normsexControl=$linesControl[$normSexIdxControl];
                     my $keyControl = $lineControl;
-                    if ($chrSample == $chrControl && $startSample == $startControl && $stopSample == $stopControl){ #Check if chr, start and stop match, if not throw error and skip this file from analysis
+                    if ($chrSample eq $chrControl && $startSample eq $startControl && $stopSample eq $stopControl){ #Check if chr, start and stop match, if not throw error and skip this file from analysis
                         my $absDiffAuto = abs($normautoSample-$normautoControl); #Calculate absolute difference autosomal coverage
                         my $absDiffSex = abs($normsexSample-$normsexControl); #Calculate absolute difference all coverage
                         push(@absDiffsAuto, $absDiffAuto);
@@ -2400,7 +2400,12 @@ sub writeCountFile {
     my($geneh,$countsh,$coverageh)=@_;
     my $genename = $geneh->{ $gene }; #total coverage for gene
     my $genecount = $countsh->{ $gene }; #number of regions on gene
-    my $genecov = ($genename/$genecount); #avg coverage per gene
+    my $genecov = 0;
+ 	if($genename & $genecount){
+ 		if($genecount > 0){
+         	$genecov = ($genename/$genecount); #avg coverage per gene
+ 		};
+ 	};
     #Calculate normalized coverages
     my $normAuto = (($coverageh->{ $key })/$covchrautoval);
     my $normTotal = (($coverageh->{ $key })/$covchrall);
