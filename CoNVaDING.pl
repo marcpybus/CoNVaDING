@@ -2296,7 +2296,7 @@ sub countFromBam {
             $regioncov =~ s/-nan/0/gs;
             calcGeneCov($chr, $start, $stop, $gene, $regioncov, $line); #Calculate coverage per region
         }else{
-            print "Incorrect BED file format, please check your BED file before processing.\n";
+            print "Incorrect BED file format, please check your BED file before processing:\n$line\n";
         }
     }
     #Calculate coverage including sex chromosomes, by iterating over bed file again
